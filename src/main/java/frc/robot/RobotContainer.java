@@ -45,7 +45,7 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
 
-    public static DriveSubsystem driveSubsystem = new DriveSystem();
+    public static DriveSubsystem driveSubsystem = new DriveSubsystem();
     public static final XboxController driverController = new XboxController(0);
   }
   public robotContainer() {
