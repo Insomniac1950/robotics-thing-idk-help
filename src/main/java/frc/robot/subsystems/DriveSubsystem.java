@@ -5,17 +5,14 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  WPI_TalonSRX leftMotorFront = RobotMap.frontLeftMotor;
-  WPI_TalonSRX leftMotorBack = RobotMap.backLeftMotor;
-  WPI_TalonSRX rightMotorFront = RobotMap.frontRightMotor;
-  WPI_TalonSRX rightMotorBack = RobotMap.backRIghtMotor;
   private static final WPI_TalonFX leftBackMotor = RobotMap.leftBackDriveMotor;
-  private static final WPI_TalonFX rightBackMotor = RobotMap.rightBackMotor;
-  private static final WPI_TalonFX leftFrontMotor = RobotMap.leftFrontMotor;
-  private static final WPI_TalonFX rightFrontMotor = RobotMap.rightFrontMotor;
+  private static final WPI_TalonFX rightBackMotor = RobotMap.rightBackDriveMotor;
+  private static final WPI_TalonFX leftFrontMotor = RobotMap.leftFrontDriveMotor;
+  private static final WPI_TalonFX rightFrontMotor = RobotMap.rightFrontDriveMotor;
   private static final double IN_TO_M= .0254;
   private static final int MOTOR_ENCODER_CODES_PER_REV = 2048;
   private static final double DIAMETER_INCHES = 5.0;

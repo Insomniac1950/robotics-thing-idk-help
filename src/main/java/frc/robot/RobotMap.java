@@ -1,7 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 public class RobotMap {
     public static final int LEFT_FRONT_DRIVE_PORT = 3;
     public static final int RIGHT_FRONT_DRIVE_PORT = 4;
