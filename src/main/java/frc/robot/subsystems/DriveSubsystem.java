@@ -4,6 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -23,76 +28,55 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double METERS_PER_TICKS = 1 / TICKS_PER_METER;
 
   public DriveSubsystem() {
-    resetEncoders();
     leftFrontMotor.set(ControlMode.Follower, leftBackMotor.getDeviceID());
-    rightFrontMotor.set(ControlMode.Follower, rightBackMotor.getDeviceID());
-    leftFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
-    leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    leftFrontMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-    leftFrontMotor.configVelocityMeasurementWindow(16);
-    leftFrontMotor.setStatusFramePeriod(StatusFrameEnchanced.Status_12_Feedback1, 5, 10);
-    leftBackMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
-    leftBackMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    leftBackMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-    leftBackMotor.configVelocityMeasurementWindow(16);
-    leftBackMotor.setStatusFramePeriod(StatusFrameEnchanced.Status_12_Feedback1, 5, 10);
-    rightFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
-    rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    rightFrontMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-    rightFrontMotor.configVelocityMeasurementWindow(16);
-    rightFrontMotor.setStatusFramePeriod(StatusFrameEnchanced.Status_12_Feedback1, 5, 10);
-    rightBackMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
-    rightBackMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    rightBackMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-    rightBackMotor.configVelocityMeasurementWindow(16);
-    rightBackMotor.setStatusFramePeriod(StatusFrameEnchanced.Status_12_Feedback1, 5, 10);
-    leftFrontMotor.setNeutralMode(NeutralMode.Coast);
-    leftBackMotor.setNeutralMode(NeutralMode.Coast);
+    rightFrontMotor.set(ControlMode.Follower, rightBackMotor.getDeviceID()); 
+
+    leftFrontMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    rightFrontMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    leftBackMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    rightBackMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+
+    leftFrontMotor.configNominalOutputForward(0, 10);
+    leftFrontMotor.configNominalOutputReverse(0, 10);
+    leftFrontMotor.configPeakOutputForward(1, 10);
+    leftFrontMotor.configPeakOutputReverse(-1, 10);
+    leftFrontMotor.configNeutralDeadband(0.001, 10);
+
+    rightFrontMotor.configNominalOutputForward(0, 10);
+    rightFrontMotor.configNominalOutputReverse(0, 10);
+    rightFrontMotor.configPeakOutputForward(1, 10);
+    rightFrontMotor.configPeakOutputReverse(-1, 10);
+    rightFrontMotor.configNeutralDeadband(0.001, 10);
+
+    leftBackMotor.configNominalOutputForward(0, 10);
+    leftBackMotor.configNominalOutputReverse(0, 10);
+    leftBackMotor.configPeakOutputForward(1, 10);
+    leftBackMotor.configPeakOutputReverse(-1, 10);
+    leftBackMotor.configNeutralDeadband(0.001, 10);
+
+    rightBackMotor.configNominalOutputForward(0, 10);
+    rightBackMotor.configNominalOutputReverse(0, 10);
+    rightBackMotor.configPeakOutputForward(1, 10);
+    rightBackMotor.configPeakOutputReverse(-1, 10);
+    rightBackMotor.configNeutralDeadband(0.001, 10);
+
+    // Sets how much error is allowed
+    leftFrontMotor.configAllowableClosedloopError(0, 0, 10);
+    leftBackMotor.configAllowableClosedloopError(0, 0, 10);
+    rightFrontMotor.configAllowableClosedloopError(0, 0, 10);
+    rightBackMotor.configAllowableClosedloopError(0, 0, 10);
+
+    leftFrontMotor.setNeutralMode(NeutralMode.Coast); 
     rightFrontMotor.setNeutralMode(NeutralMode.Coast);
+    leftBackMotor.setNeutralMode(NeutralMode.Coast);
     rightBackMotor.setNeutralMode(NeutralMode.Coast);
-    leftFrontMotor.setInverted(false);
-    leftBackMotor.setInverted(false);
+    
+    leftFrontMotor.setInverted(true);
     rightFrontMotor.setInverted(false);
+    leftBackMotor.setInverted(true);
     rightBackMotor.setInverted(false);
-    frontLeftMotor.set(ControlMode.Follower, backLeftMotor.getDeviceID());
-    frontRightMotor.set(ControlMode.Follwoer, backRightMotor.getDeviceID());
-    leftMotor.setNeutralMode(NeutralMode.Coast);
-    rightMotor.setNeutralMode(NeutralMode.Coast);
 
-    leftMotorFront.configNominalOutputForward(0,TIMEOUT_MS);
-    leftMotorFront.configNominalOutputReverse(0,TIMEOUT_MS);
-    leftMotorFront.configPeakOutputForward(1,TIMEOUT_MS);
-    leftMotorFront.configPeakOutputReverse(-1,TIMEOUT_MS);
-
-    leftMotorBack.configNominalOutputForward(0,TIMEOUT_MS);
-    leftMotorBack.configNominalOutputReverse(0,TIMEOUT_MS);
-    leftMotorBack.configPeakOutputForward(1,TIMEOUT_MS);
-    leftMotorBack.configPeakOutputReverse(-1,TIMEOUT_MS);
-
-    rightMotorFront.configNominalOutputForward(0,TIMEOUT_MS);
-    rightMotorFront.configNominalOutputReverse(0,TIMEOUT_MS);
-    rightMotorFront.configPeakOutputForward(1,TIMEOUT_MS);
-    rightMotorFront.configPeakOutputReverse(-1,TIMEOUT_MS);
-
-    rightMotorBack.configNominalOutputForward(0,TIMEOUT_MS);
-    rightMotorBack.configNominalOutputReverse(0,TIMEOUT_MS);
-    rightMotorBack.configPeakOutputForward(1,TIMEOUT_MS);
-    rightMotorBack.configPeakOutputReverse(-1,TIMEOUT_MS);
-
-    leftMotorFront.configNeutralDeadband(0.001, TIMEOUT_MS);
-    leftMotorBack.configNeutralDeadband(0.001, TIMEOUT_MS);
-    rightMotorFront.configNeutralDeadband(0.001, TIMEOUT_MS);
-    rightMotorBack.configNeutralDeadband(0.001, TIMEOUT_MS);
-
-    frontLeftMotor.setSensorPhase(true);
-    frontRightMotor.setSensorPhase(false);
-    backLeftMotor.setSensorPhase(true);
-    backRightMotor.setSensorPhase(false);
-
-    frontLeftMotor.setInverted(false);
-    frontRightMotor.setInverted(true);
-    backRightMotor.setInverted(true);
-    backLeftMotor.setInverted(false);
+    resetEncoders();
   }
 
   @Override
@@ -105,10 +89,10 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
   public void resetEncoders() {
-    backLeftMotor.setSelectedSensorPosition(0);
-    backRightMotor.setSelectedSensorPosition(0);
-    frontLeftMotor.setSelectedSensorPosition(0);
-    frontRightMotor.setSelectedSensorPosition(0);
+    leftBackMotor.setSelectedSensorPosition(0);
+    rightBackMotor.setSelectedSensorPosition(0);
+    leftFrontMotor.setSelectedSensorPosition(0);
+    rightFrontMotor.setSelectedSensorPosition(0);
   }
   public static void drive(double throttle, double rotate) {
     leftFrontMotor.set(throttle + rotate);
@@ -117,7 +101,16 @@ public class DriveSubsystem extends SubsystemBase {
     rightBackMotor.set(throttle - rotate);
   }
   public double getRightBackEncoderPosition() {
-    return rightBackMotor.getSelectedSensorPosision();
+    return rightBackMotor.getSelectedSensorPosition();
+  }
+  public double getLeftBackEncoderPosition() {
+    return leftBackMotor.getSelectedSensorPosition();
+  }
+  public double getRightFrontEncoderPosition() {
+    return rightFrontMotor.getSelectedSensorPosition();
+  }
+  public double getLeftFrontEncoderPosition() {
+    return leftFrontMotor.getSelectedSensorPosition();
   }
   public double distanceTravelledinTicks() {
     return (getLeftBackEncoderPosition() + getRightBackEncoderPosition()) / 2;
@@ -134,14 +127,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void stop() {
     drive(0,0);
   }
-  public class JoystickDrive extends CommandBase {
-    private final DriveSubSystem driveSubsystem;
-    private final static XboxController driverController = RobotContainer.driverController;
-  }
-  public JoystickDrive(DriveSubsystem drivetrain) {
-    driveSubsystem = drivetrain;
-    addRequirements(driveSubsystem);
-  }
+
   public void setModePercentVoltage() {
     leftFrontMotor.set(ControlMode.PercentOutput, 0);
     rightFrontMotor.set(ControlMode.PercentOutput, 0);
