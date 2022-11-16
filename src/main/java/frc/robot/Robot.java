@@ -1,13 +1,21 @@
 // Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
+// Op Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,7 +28,10 @@ public class Robot extends TimedRobot {
   private DriveSubsystem driveSubsystem = m_robotContainer.driveSubsystem;
 
   private Command m_autonomousCommand;
-
+  private RobotContainer m_robotContainer;
+  private LimelightSubsystem LimelightSubsystem = m_robotContainer.limelightSubsystem;
+  private final WPI_TalonFX leftBackMotor = RobotMap.leftBackDriveMotor;
+  private final WPI_TalonFX rightBackMotor = RobotMap.rightBackDriveMotor;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -33,6 +44,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.driveSubsystem.setModePercentVoltage();
     m_robotContainer.driveSubsystem.resetEncoders();
+    UsbCamera camera = CameraServer.startAutomaticCapture();
+    camera.setResolution(240,180);
+    camera.setFPS(8);
+    frc.robot.subsystems.LimelightSubsystem.turn_LED_ON();
   }
 
   /**
@@ -48,7 +63,17 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    //Always Called
     CommandScheduler.getInstance().run();
+
+    SmartDashboard.putNumber("Left Back F500 Temp C", leftBackMotor.getTemperature());
+    SmartDashboard.putNumber("Right Back F500 Temp C", rightBackMotor.getTemperature());
+
+    SmartDashboard.putNumber("Back Left Drive MPS", driveSubsystem.getSelectedSensorPosition());
+
+    SmartDashboard.putBoolean("WITHIN 1.7 to 5 METERS?", frc.robot.subsystems.LimelightSubsystem.isWithinDistance());
+    SmartDashboard.putNumber("LIMELIGHT OFFSET", frc.robot.subsystems.LimelightSubsystem.getLimelightX());
+    SmartDashboard.putNumber("Horizontal Distance", frc.robot.subsystems.LimelightSubsystem.getHorizontalDistance());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -18,17 +19,18 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final JoystickDrive m_joystickDrive = new JoystickDrive();
 
-  public final JoystickDrive joystickDrive = new JoystickDrive(driveSubsystem);
-
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static final XboxController driverController = new XboxController(0);
-
+  private final JoystickDrive m_autoCommand = new JoystickDrive(m_joystickDrive);
+  public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    
+
     driveSubsystem.setDefaultCommand(
       new JoystickDrive(driveSubsystem)
     );
@@ -44,12 +46,11 @@ public class RobotContainer {
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
-   * @return 
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return joystickDrive;
+    return m_autoCommand;
   }
 }

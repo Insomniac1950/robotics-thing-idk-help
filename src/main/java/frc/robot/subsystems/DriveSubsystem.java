@@ -13,11 +13,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class DriveSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
+  
   private static final WPI_TalonFX leftBackMotor = RobotMap.leftBackDriveMotor;
   private static final WPI_TalonFX rightBackMotor = RobotMap.rightBackDriveMotor;
   private static final WPI_TalonFX leftFrontMotor = RobotMap.leftFrontDriveMotor;
   private static final WPI_TalonFX rightFrontMotor = RobotMap.rightFrontDriveMotor;
+
   private static final double IN_TO_M= .0254;
   private static final int MOTOR_ENCODER_CODES_PER_REV = 2048;
   private static final double DIAMETER_INCHES = 5.0;
@@ -26,7 +27,7 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double GEAR_RATIO = 12.75;
   private static final double TICKS_PER_METER = (MOTOR_ENCODER_CODES_PER_REV * GEAR_RATIO) / (WHEEL_CIRCUMFERENCE);
   private static final double METERS_PER_TICKS = 1 / TICKS_PER_METER;
-
+  
   public DriveSubsystem() {
     leftFrontMotor.set(ControlMode.Follower, leftBackMotor.getDeviceID());
     rightFrontMotor.set(ControlMode.Follower, rightBackMotor.getDeviceID()); 
@@ -79,59 +80,23 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
+  
   public void resetEncoders() {
     leftBackMotor.setSelectedSensorPosition(0);
     rightBackMotor.setSelectedSensorPosition(0);
     leftFrontMotor.setSelectedSensorPosition(0);
     rightFrontMotor.setSelectedSensorPosition(0);
   }
+  
   public static void drive(double throttle, double rotate) {
     leftFrontMotor.set(throttle + rotate);
     rightFrontMotor.set(throttle - rotate);
     leftBackMotor.set(throttle + rotate);
     rightBackMotor.set(throttle - rotate);
   }
-  public double getRightBackEncoderPosition() {
-    return rightBackMotor.getSelectedSensorPosition();
-  }
-  public double getLeftBackEncoderPosition() {
-    return leftBackMotor.getSelectedSensorPosition();
-  }
-  public double getRightFrontEncoderPosition() {
-    return rightFrontMotor.getSelectedSensorPosition();
-  }
-  public double getLeftFrontEncoderPosition() {
-    return leftFrontMotor.getSelectedSensorPosition();
-  }
-  public double distanceTravelledinTicks() {
-    return (getLeftBackEncoderPosition() + getRightBackEncoderPosition()) / 2;
-  }
-  public double getLeftBackEncoderVelocityMetersPerSecond() {
-    double leftVelocityMPS = (leftBackMotor.getSelectedSensorVelocity()*10);
-    leftVelocityMPS = leftVelocityMPS * METERS_PER_TICKS;
-    return (leftVelocityMPS);
-  }
-  public double leftDistanceTravelledInMeters() {
-    double left_dist = getLeftBackEncoderPosition() * METERS_PER_TICKS;
-    return left_dist;
-  }
-  public void stop() {
-    drive(0,0);
-  }
 
-  public void setModePercentVoltage() {
-    leftFrontMotor.set(ControlMode.PercentOutput, 0);
-    rightFrontMotor.set(ControlMode.PercentOutput, 0);
-    leftBackMotor.set(ControlMode.PercentOutput, 0);
-    rightBackMotor.set(ControlMode.PercentOutput, 0);
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 }

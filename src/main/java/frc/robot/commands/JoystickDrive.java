@@ -4,27 +4,20 @@
 
 package frc.robot.commands;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveSubsystem;
 
-/** An example command that uses an example subsystem. */
 public class JoystickDrive extends CommandBase {
+  
   private final DriveSubsystem driveSubsystem;
   private final static XboxController driveController = RobotContainer.driverController;
 
-
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public JoystickDrive(DriveSubsystem subsystem) {
-    driveSubsystem = subsystem;
+  public JoystickDrive() {
+    driveSubsystem = m_joystickDrive;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_joystickDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -39,24 +32,16 @@ public class JoystickDrive extends CommandBase {
     if((throttle > 0 && throttle < 0.25) || (throttle < 0 && throttle > -0.25)) {
       throttle = 0;
     } else {
-      throttle = throttle;
+      throttle = 0.35*throttle;
     }
 
     if ((rotate > 0 && rotate < 0.25) || (rotate < 0 && rotate > -0.25)) {
       rotate = 0;
-    }
-    rotate = 2*rotate;
-    if (driveController.getRightTriggerAxis() > 0.25) {
-      throttle = Math.signum(throttle) * 0.75;
-    }
-    else if (driveController.getAButton()) {
-      throttle = (throttle*1.1);
-    }
-    else {
-      throttle = (throttle*0.8);
+    } else {
+    rotate = 0.35*rotate;
     }
 
-    DriveSubsystem.drive(throttle, rotate);
+    driveSubsystem.drive(throttle, -rotate);
   }
 
   // Called once the command ends or is interrupted.
